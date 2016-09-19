@@ -1,0 +1,197 @@
+<html>
+
+<head>
+
+	<title>
+		Automate your Job Application
+	</title>
+	
+	<meta charset="utf-8">
+
+	<!--https://code.jquery.com/qunit/qunit-2.0.1.js for testing-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+		//load scripts for jquery.
+	</script>
+
+	<script src="urldata/jobpostingurls.js">
+		//file to set and get job posting urls (basically what sites you want to get your job postings from.  Go to specific job posting, though)..
+	</script>
+	
+	<script src="jobpostingdata/jobposting.js">
+		//file to modify job posting data.
+	</script>
+	
+	<script src="jobpostingdata/jobpostinglist.js">
+		//effectively collection of job postings.  
+	</script>
+	
+	<script src="filegenerationforjob/generatecoverletter.js">
+		//file to automatically generate cover letters based on job posting data.
+	</script>
+	
+	<script src="grabjobpostingfromsite.js">
+		//file to automatically grab job posting data from listed websites.
+	</script>
+	
+</head>
+
+
+
+<body>
+	
+	<div id="websitediv"><!--input and show list of sites to grab data from-->
+		Add the site to grab data from here
+		
+		<form id="addurlform">
+			<input id="urlinput" type="text" placeholder="insert url here">
+			<br>
+			<input id="urlsubmit" type="submit" value="Add url to the url list">
+		</form>
+		
+		
+		<div id="displayurlsdiv"><!--display the list of urls to grab data from-->
+			Display urls here
+		</div>
+	</div>
+	
+	<br>
+	
+	<div id="jobpostingdatadiv"><!--input and show list of data for each job posting.  Sometimes not all data is grabbed, so the user can manually adjust accordingly-->
+		Job Posting Data:
+		
+		
+		<form id="jobpostingdatafromsiteform"><!--Add job posting data based on the list of urlsubmit-->
+			<input id="jobpostingfromsitessubmit" type="submit" value="Add job posting data based on urls">
+		</form>
+		
+		<form id="addjobpostingdataform"><!-- be able to modify, add, or remove job posting data, or an entire object of such.  User can adjust stats, in case the computer was off by a bit.-->
+			<input id="nameinput" type="text" placeholder="insert your full name here">
+			<br>
+			<input id="departmentinput" type="text" placeholder="insert the department here">
+			<br>
+			<input id="attention_toinput" type="text" placeholder="insert the attention to here">
+			<br>
+			<input id="p_o_boxinput" type="text" placeholder="insert the p.o. box here">			
+			<br>
+			<input id="locationinput" type="text" placeholder="insert the location here">			
+			<br>
+			<input id="position_numberinput" type="text" placeholder="insert the position number here">			
+			<br>
+			<input id="working_titleinput" type="text" placeholder="insert the working title here">			
+			<br>
+			<input id="desired_talentsinput" type="text" placeholder="insert the desirable talents here">			
+			<br>
+			<input id="required_documentsinput" type="text" placeholder="insert the required documents here">			
+			<br>
+			<input id="jobpostingsubmit" type="submit" value= "Add job posting to the job posting list">
+			
+		
+		</form>
+
+		
+		<div id="displayjobpostingdatadiv"><!-- display the list of job posting data-->
+			<!--This will also display the data for the cover letter , based on the job posting selected.-->
+			<ul id="jobpostingul">
+				
+			</ul>
+		</div>
+		
+		
+	</div>
+	
+	<br>	
+	
+
+	
+	
+	<script>
+	
+		var myjoblist = new JobPostingCollection();//make a list for job postings to put stuff in.
+		//I put this outside so that all external files can access it...I think this is poor programming.
+		
+		var myurl_list = new Url_List();//list for urls.
+		
+		$(document).ready
+		(
+			function()
+			{
+				//console.log(document.querySelector('#jobpostingul'));
+				jobpostingview.setUpEventListeners();//I put this here to make sure the html loads before this is called.
+
+			
+				//$('#displayurlsdiv').html(displayURLList());//debug displayURLList returns a string HTML compatible, showing the list of urls
+				
+				
+				$('#addurlform').submit
+				(//when the user clicks on the button, add the url to the list of urls, then update by displaying the url list.
+					function(event)
+					{
+						console.log("add url form submit:  adding url " +$('urlid').val() +"\n");
+						myurl_list.addURL($('input[id=urlinput]').val());//add the url, based on the input given at the url form.
+					
+						console.log("Url List: " + myurl_list.displayURLList());
+						$('#displayurlsdiv').html(myurl_list.displayURLList());//displayURLList returns a string HTML compatible, showing the list of urls
+						event.preventDefault();//prevent the page from automatically refreshing
+					}
+				);
+				
+				
+				
+				$('#jobpostingdatafromsiteform').submit
+				(
+					function(event)
+					{//when the button is pressed, just grab the data from the sites.
+
+						
+						generateJobPostingsBySites(myurl_list.listofurls);//external function that uses the list of urls to automate job postings.		
+						
+						
+						
+						
+						event.preventDefault();
+					}
+				);
+				
+				
+				
+				$('#addjobpostingdataform').submit
+				(//when the user clicks on the button for this form, add a job posting data to the list of job posting data manually, instead of grabbing it directly from a website/url.
+					function(event)
+					{
+					
+						//make new object job posting to put into a list.
+						var myjobposting = new JobPosting
+						(
+							$('#addjobpostingdataform :input[id=departmentinput]').val(),
+							$('#addjobpostingdataform :input[id=attention_toinput]').val(),
+							$('#addjobpostingdataform :input[id=p_o_boxinput]').val(),
+							$('#addjobpostingdataform :input[id=locationinput]').val(),
+						  	$('#addjobpostingdataform :input[id=position_numberinput]').val(),
+							$('#addjobpostingdataform :input[id=working_titleinput]').val(),
+							$('#addjobpostingdataform :input[id=desired_talentsinput]').val(),
+							$('#addjobpostingdataform :input[id=required_documentsinput]').val(),
+							$('#addjobpostingdataform :input[id=nameinput]').val()
+						);
+						
+						//console.log(myjobposting.getJobDataAsString());//debug, show job posting.
+						myjoblist.addElement(myjobposting);//add the newly created job posting to the job list
+						
+						jobpostingview.factoryJobPostingListView();//update the view.
+						
+						
+						event.preventDefault();//prevent the page from automatically refreshing
+					}
+				);
+				
+				
+				
+				
+			}
+		);
+	
+	//something about how properties are js variables.
+	</script>
+</body>
+
+
+</html>
