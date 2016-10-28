@@ -6,6 +6,10 @@
 
 
 
+//TODO USE THIS TO GET THE POSITION NUMBER.
+//document.getElementsByClassName('postingContent')[2].childNodes[2].childNodes[1].childNodes[2].childNodes[3]
+
+
 
 
 
