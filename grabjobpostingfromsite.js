@@ -4,16 +4,15 @@
 
 //I'm assuming that jquery stuff can work here.
 
+//npm json-server
+//json-server --watch db.json
+
+//can use node somecode.js too, apparently.
+
+//There is no real need for a node command currently.
 
 
-//TODO USE THIS TO GET THE POSITION NUMBER.
-//document.getElementsByClassName('postingContent')[2].childNodes[2].childNodes[1].childNodes[2].childNodes[3]
-
-
-
-
-
-function generateJobPostingsBySites(listofjobpostingurls)
+function generateJobPostingsBySites( listofjobpostingurls )
 {//get a list of job posting urls, and with each one, generate job postings and cover letters.
 
 	//I assume that the parameter is URL_List.listofurls .
@@ -39,6 +38,24 @@ function generateJobPostingsBySites(listofjobpostingurls)
 		console.log("Job posting url in generateJobPostingBySites is " + jobpostingurl);
 		
 		
+		
+		var jobpostingdata = new JobPosting
+		(//job posting data to do stuff with.	
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				""
+			
+		);
+		
+		//Make sure you type the file name and extension (ex. jc34729.html)
+		
+		//TODO do I need ajax?  Yes.  To grab data from other sites (other html files).
 		$.ajax
 		(//first ajax call to grab the site's data for job postings.
 			{
@@ -76,10 +93,15 @@ function generateJobPostingsBySites(listofjobpostingurls)
 												+ ' ' + $(data).find('#lblPostalState').html() 
 												+ ', ' + $(data).find('#lblPostalZip').html(); 
 					
-					//jobpostingdata.position_number = $(data).find('#postingContent').html();
+					//Found through trial and error in the JavaScript Console
+					//jobpostingdata.position_number = document.getElementsByClassName('postingContent')[2].childNodes[2].childNodes[1].childNodes[2].childNodes[3];
 					//for position number, look under the posting content class div, and look for a lonesome div, with NO ID OR CLASS.
-					
-					
+					//here's the JQuery for the above:
+					/*
+						The find will find based on class if there is a '.', an id if '#', and based on an index if there are many of them using :eq(index) [usually for many tr in a table].
+					*/
+					jobpostingdata.position_number = $(data).find("#pnlPositionDetails").find(".postingContent").find("table").find("tr:eq(1)").find("td:eq(1)").find("div").html();
+					console.log(jobpostingdata.position_number);
 					
 					console.log("Jobpostingdata in generateJobPostingBySites after first ajax call is " + jobpostingdata.getJobDataAsString() + ". Putting into list now."); 
 					myjoblist.addElement(jobpostingdata);//add the element to the list.
