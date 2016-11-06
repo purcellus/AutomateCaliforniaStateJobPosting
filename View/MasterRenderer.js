@@ -13,7 +13,7 @@ function MasterRenderer ( master )
 	"<div id=\"websitediv\">" +
 		"Add the site to grab data from here" +
 		
-		"<form id=\"addurlform\">" +
+		"<form id=\"addurlform\"         >" +			
 			"<input id=\"urlinput\" type=\"text\" placeholder=\"insert url here\">" +
 			"<br>" +
 			"<input id=\"urlsubmit\" type=\"submit\" value=\"Add url to the url list\">" +	//button to submit url.
@@ -31,7 +31,7 @@ function MasterRenderer ( master )
 		"Job Posting Data:" + 
 		
 		
-		"<form id=\"jobpostingdatafromsiteform\">" +
+		"<form id=\"jobpostingdatafromsiteform\">" +		//where to do the php command getSiteHTML.php.
 			"<input id=\"jobpostingfromsitessubmit\" type=\"submit\" value=\"Add job posting data based on urls\">" + 	//button to make job postings based on urls.
 		"</form>" + 
 		

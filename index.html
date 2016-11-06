@@ -54,9 +54,6 @@
 				master.addURL( url );
 				
 				//put variable into php so php can process it.
-				$.post("Controller/getSiteHTML.php", { myjobpostingurl: url } );
-				//window.location.href = "Controller/getSiteHTML.php?jobpostingurl = " + url;//put url into the .php file to grab it.
-				
 				
 				event.preventDefault();
 			}

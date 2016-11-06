@@ -15,6 +15,8 @@ function Master()
 	
 	
 	this.grabjobpostingfromsitecommand = new GrabJobPostingFromSiteCommand( this );
+	
+	this.name = "Austin Purcell";
 }
 
 

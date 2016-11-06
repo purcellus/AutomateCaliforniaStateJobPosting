@@ -47,32 +47,19 @@ GrabJobPostingFromSiteCommand.prototype.execute = function()
 		
 		console.log("Job posting url in generateJobPostingBySites is " + jobpostingurl);
 		
-		//$.post( "Controller/getSiteHTML.php", { myjobpostingurl: jobpostingurl });
-		window.location.href = "Controller/getSiteHTML.php/?jobpostingurl=" + jobpostingurl;//put url into the .php file to grab it.
+		//$.post( "Controller/getSiteHTML.php", { 'jobpostingurl': jobpostingurl });
+		//window.location.href = "Controller/getSiteHTML.php/?jobpostingurl=" + jobpostingurl;//put url into the .php file to grab it.
 		
 		
-		/*$.getJSON
-		(//get the json (which will just be a string.
-			'Controller/getSiteHTML.php', 
-			{'myjobpostingurl': jobpostingurl}, //pass the job posting url to the php.
-			function(e) 
+		$.ajax
+		(//ajax call to put url data into php command.		
 			{
-				console.log("success");
-				console.log(e.htmlresult);//get the html code.
-				
-				
-			}
-		);	*/
-		
-		//I need Ajax to grab data from other sites (other html files).
-		/*$.ajax
-		(//first ajax call to grab the site's data for job postings.
-			{
-				url: jobpostingurl,
-				type: 'GET',
-				success: function(data)
-				{//upon successful ajax request, do this.
-					//console.log("Ajax successful.  Grabbing data from url.");
+				type: 'GET',	//type of request, ex. GET, POST, DELETE, PATCH, PUT
+				url: 'Controller/getSiteHTML.php',	//link to do stuff.
+				data: {'jobpostingurl': jobpostingurl},	//data, sending this from js to php.
+				success: function( data )
+				{
+					console.log("Ajax successful. " + data);
 					
 					var jobpostingdata = 
 					{//job posting data to do stuff with.	
@@ -86,7 +73,7 @@ GrabJobPostingFromSiteCommand.prototype.execute = function()
 							required_documents 	: " ",
 
 							//personal data not gotten from the document, such as the user's name.
-							my_name 			: " ",
+							my_name 			: mymaster.name,
 
 							my_url 				: jobpostingurl//URL MUST BE UNIQUE, to be able to lookup in the container.
 						
@@ -120,12 +107,16 @@ GrabJobPostingFromSiteCommand.prototype.execute = function()
 					
 					
 					mymaster.addJobPosting( myjobposting );//add the job posting just made, then update the view (done in this method).
-
+					
+					
+					
 				}
-			
 			}
+		);
 		
-		);*/
+		
+		
+		//I need Ajax to grab data from other sites (other html files).
 		
 		
 		
