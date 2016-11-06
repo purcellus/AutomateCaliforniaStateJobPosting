@@ -1,10 +1,8 @@
 <!--get the sites' html files by using php code -->
 <!--jobpostingurl is sent from the url by javascript-->
+<!--to which the data grabbed from here (the html) is sent back to the javascript-->
 
 <?php
-	//TODO the first part of the URL should be decoded, having '/' and whatnot.
-	//the second part of the URL should be encoded, having '%3d' and whatnot.
-	//so, I should separate the two parts, and then combine them here...somehow.
 	
 	
 	
